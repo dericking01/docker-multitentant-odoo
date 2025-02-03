@@ -1,0 +1,7 @@
+{
+    "registry": {
+      "url": "http://172.19.0.2:5000",
+      "name": "My Docker Registry",
+      "read_only": false
+    }
+  }

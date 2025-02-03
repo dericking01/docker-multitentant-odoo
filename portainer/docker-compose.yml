@@ -1,0 +1,21 @@
+services:
+  
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: odoo_portainer
+    ports:
+      - "9443:9443"
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - odoo_network
+
+volumes:
+  portainer_data:
+
+networks:
+  odoo_network:
+    name: odoo_network
+    external: true    
