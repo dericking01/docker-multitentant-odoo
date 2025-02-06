@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  registry:
+    image: registry:2
+    container_name: registry
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data/registry:/var/lib/registry
+      - ./config/registry/config.yml:/etc/docker/registry/config.yml
+      - ./logs/registry:/var/log/registry
+    networks:
+      - registry_network
+
+  registry-ui:
+    image: joxit/docker-registry-ui:latest
+    container_name: registry-ui
+    ports:
+      - "8080:80"
+    environment:
+      - REGISTRY_TITLE=My Docker Registry
+      - REGISTRY_URL=http://registry:5000
+    volumes:
+      - ./config/registry-ui/config.json:/app/config.json
+    depends_on:
+      - registry
+    networks:
+      - registry_network
+
+networks:
+  registry_network:
+    name: registry_network

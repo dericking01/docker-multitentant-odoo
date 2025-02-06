@@ -1,0 +1,7 @@
+{
+    "registry": {
+      "url": "http://registry:5000",
+      "name": "My Docker Registry",
+      "read_only": false
+    }
+  }
