@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - odoo_network
+
+  odoo_pca:
+    image: odoo:18.0  # Use Odoo 18.0 for stability
+    depends_on:
+      - postgres
+    ports:
+      - "8069:8069"  # PCA Odoo
+    environment:
+      - HOST=postgres
+      - USER=odoo
+      - PASSWORD=odoo
+    volumes:
+      - ./config/pca.conf:/etc/odoo/odoo.conf
+      - ./addons/pca:/mnt/extra-addons
+      - ./logs/pca:/var/log/odoo
+      - odoo_filestore:/var/lib/odoo  # Mount filestore volume
+    networks:
+      - odoo_network
+
+  odoo_pcb:
+    image: odoo:18.0  # Use Odoo 18.0 for stability
+    depends_on:
+      - postgres
+    ports:
+      - "8070:8069"  # PCB Odoo
+    environment:
+      - HOST=postgres
+      - USER=odoo
+      - PASSWORD=odoo
+    volumes:
+      - ./config/pcb.conf:/etc/odoo/odoo.conf
+      - ./addons/pcb:/mnt/extra-addons
+      - ./logs/pcb:/var/log/odoo
+      - odoo_filestore:/var/lib/odoo  # Mount filestore volume
+    networks:
+      - odoo_network
+
+  odoo_pcc:
+    image: odoo:18.0  # Use Odoo 18.0 for stability
+    depends_on:
+      - postgres
+    ports:
+      - "8071:8069"  # PCC Odoo
+    environment:
+      - HOST=postgres
+      - USER=odoo
+      - PASSWORD=odoo
+    volumes:
+      - ./config/pcc.conf:/etc/odoo/odoo.conf
+      - ./addons/pcc:/mnt/extra-addons
+      - ./logs/pcc:/var/log/odoo
+      - odoo_filestore:/var/lib/odoo  # Mount filestore volume
+    networks:
+      - odoo_network
+
+volumes:
+  postgres_data:
+  odoo_filestore:
+
+networks:
+  odoo_network:
+    name: odoo_network
+    external: true

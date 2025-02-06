@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  python-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/app/data  # Mount the data directory for input/output
+    container_name: python-container
+    command: ["sh", "-c", "python scripts/process_data.py && sleep infinity"] # keep the container running
+    # command: ["python", "scripts/process_data.py"]  # Optional override
