@@ -17,7 +17,8 @@ services:
     depends_on:
       - postgres
     ports:
-      - "8069:8069"  # PCA Odoo
+      - "8069:8069"  
+      - "8077:8069"
     environment:
       - HOST=postgres
       - USER=odoo
@@ -25,6 +26,7 @@ services:
     volumes:
       - ./config/pca.conf:/etc/odoo/odoo.conf
       - ./addons/pca:/mnt/extra-addons
+      - ./addons/enterprise:/mnt/enterprise-addons
       - ./logs/pca:/var/log/odoo
       - odoo_filestore:/var/lib/odoo  # Mount filestore volume
     networks:
